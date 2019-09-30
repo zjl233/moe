@@ -14,6 +14,7 @@ class Number(BaseBox):
 class BinaryOp(BaseBox):
     op_map = {
         '+', op.add
+
     }
 
     def __init__(self, left, right):

@@ -4,9 +4,9 @@ from ast import *
 
 pg = ParserGenerator(
     # A list of all token names, accepted by the parser.
-    ['NUMBER', 'OPEN_PAREN', 'CLOSE_PAREN',
+    ['NUMBER', 'LPAREN', 'RPAREN',
      'PLUS', 'MINUS', 'MUL', 'DIV',
-      'ID', 'ASSIGN',
+     'ID', 'ASSIGN',
      ],
     # A list of precedence rules with ascending precedence, to
     # disambiguate ambiguous production rules.
@@ -17,7 +17,7 @@ pg = ParserGenerator(
     ]
 )
 
-global_vars = {}
+memory = {}
 
 
 # all lower case(expr...) is ast
@@ -36,7 +36,7 @@ def expr_number(p) -> Number:
     return Number(int(p[0].getstr()))
 
 
-@pg.production('expr : OPEN_PAREN expr CLOSE_PAREN')
+@pg.production('expr : LPAREN expr RPAREN')
 def expr_parens(p):
     return p[1]
 
@@ -64,19 +64,19 @@ def expr_binop(p) -> BinaryOp:
 def expr_assign(p):
     # _, _id, _, expr = p
     print('enter assign')
-    global_vars[p[1].getstr()] = p[2]
+    memory[p[1].getstr()] = p[2]
     return p[2]
 
 
 @pg.production('expr : ID')
 def expr_id(p):
-    print(global_vars)
+    print(memory)
     print('enter id')
-    return global_vars[p[0].getstr()]
+    return memory[p[0].getstr()]
 
 
 # # todo implement print
-# @pg.production('expr : PRINT OPEN_PAREN NUMBER CLOSE_PAREN')
+# @pg.production('expr : PRINT LPAREN NUMBER RPAREN')
 # def expr_print(p):
 #     print(p)
 #     print('enter print')

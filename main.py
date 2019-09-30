@@ -16,18 +16,26 @@ def repl():
 
 
 def test_print():
-    code = 'print(6)'
-    tokens = lexer.lex(code)
+    prog = 'print(6)'
+    tokens = lexer.lex(prog)
     print(list(tokens))
     tree = parser.parse(tokens)
     print(tree.eval())
 
 
-def test_code():
-    code = '1 + 1 * 3'
-    print(parser.parse(lexer.lex(code)).eval())
+def test_prog():
+    prog = '1 + 1 * 3'
+    tokens = lexer.lex(prog)
+    # print(list(tokens))
+    tree = parser.parse(tokens)
+    print(tree.eval())
+
+
+def main(prog: str) -> None:
+    tokens = lexer.lex(prog)
+    tree = parser.parse(tokens)
 
 
 if __name__ == '__main__':
-    test_code()
+    test_prog()
     # repl()
