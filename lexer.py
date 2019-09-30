@@ -1,8 +1,15 @@
+import tokenize
+
 from rply import LexerGenerator
 
 #
-# import re
-# re.compile(r'\|\|')
+import re
+# re.compile(r'\([^()]*\)')
+# re.compile(
+# r"'(''|[^'])*'")
+# INTNUM = r'\d+'
+# FLOATNUM = r'\d+\.\d+'
+# re.compile(r'\d+(\.\d+)?')
 #
 from utils import log
 
@@ -18,9 +25,8 @@ lg.add('FN', r'fn')
 lg.add('RETURN', r'return')
 lg.add('PRINT', r'print')
 
-# todo add string literal
-lg.add('NUMBER', r'\d+')
-# todo add float literal
+lg.add('STRING', r"'(''|[^'])*'")
+lg.add('NUMBER', r'\d+(\.\d+)?')
 lg.add('ID', r'[a-zA-Z][a-zA-Z0-9]*')
 
 # operators
@@ -47,13 +53,13 @@ lg.add('RBRACK', r'\]')
 lg.add('LBRACE', r'\{')
 lg.add('RBRACE', r'\}')
 
-# comment
 lg.ignore('\s+')
+lg.ignore(r"^#.*?")
 
 lexer = lg.build()
 
 if __name__ == '__main__':
     prog = 'var x = 1 + 1'
-    for token in lexer.lex('var x = 1 + 1;'):
+    for token in lexer.lex('var x = 1.1 + 1;'):
         log('prog: ', prog)
         log('token: ', token)
