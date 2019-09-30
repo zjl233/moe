@@ -6,7 +6,7 @@ pg = ParserGenerator(
     # A list of all token names, accepted by the parser.
     ['NUMBER', 'LPAREN', 'RPAREN',
      'PLUS', 'MINUS', 'MUL', 'DIV',
-     'ID', 'ASSIGN',
+     'ID', 'ASSIGN', 'VAR'
      ],
     # A list of precedence rules with ascending precedence, to
     # disambiguate ambiguous production rules.
@@ -60,7 +60,7 @@ def expr_binop(p) -> BinaryOp:
         raise AssertionError('Oops, this should not be possible!')
 
 
-@pg.production('expr : ID ASSIGN expr')
+@pg.production('expr : VAR ID ASSIGN expr')
 def expr_assign(p):
     # _, _id, _, expr = p
     print('enter assign')
