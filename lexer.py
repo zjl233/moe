@@ -43,7 +43,6 @@ lg.add('AND', r'&&')
 lg.add('OR', r'||')
 lg.add('SEMI', r';')
 lg.add('COMMA', r'.')
-lg.add('NUMBER', r'\d+')
 
 # comment
 lg.ignore('\s+')
