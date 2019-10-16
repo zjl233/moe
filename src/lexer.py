@@ -14,8 +14,8 @@ lg.add('RETURN', r'return')
 lg.add('PRINT', r'print')
 
 # Literals
-lg.add('STRING', r"'(''|[^'])*'")
-lg.add('NUMBER', r'\d+(\.\d+)?')
+lg.add('STRING', r'"(""|[^"])*"')
+lg.add('NUMBER', r'-?\d+(\.\d+)?')
 lg.add('ID', r'[a-zA-Z][a-zA-Z0-9]*')
 
 # Operators
