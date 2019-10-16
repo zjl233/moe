@@ -1,19 +1,20 @@
 from rply import ParserGenerator
+from rply.lexer import LexerStream
 
-from ast import *
+from src.ast import *
 
 pg = ParserGenerator(
     # A list of all token names, accepted by the parser.
-    ['NUMBER', 'LPAREN', 'RPAREN',
-     'PLUS', 'MINUS', 'MUL', 'DIV',
-     'ID', 'ASSIGN', 'VAR'
-     ],
-    # A list of precedence rules with ascending precedence, to
+    tokens=['NUMBER', 'LPAREN', 'RPAREN',
+            'PLUS', 'MINUS', 'MUL', 'DIV',
+            'ID', 'ASSIGN', 'VAR'
+            ],
+    # A list of precedence rules with `ascending` precedence, to
     # disambiguate ambiguous production rules.
     precedence=[
-        ('left', ['ASSIGN']),
         ('left', ['PLUS', 'MINUS']),
-        ('left', ['MUL', 'DIV'])
+        ('left', ['MUL', 'DIV']),
+        ('left', ['ASSIGN']),
     ]
 )
 
@@ -64,8 +65,8 @@ def expr_binop(p) -> BinaryOp:
 def expr_assign(p):
     # _, _id, _, expr = p
     print('enter assign')
-    memory[p[1].getstr()] = p[2]
-    return p[2]
+    memory[p[1].getstr()] = p[3]
+    return p[3]
 
 
 @pg.production('expr : ID')
@@ -84,3 +85,7 @@ def expr_id(p):
 
 
 parser = pg.build()
+
+
+def parse(tokens: LexerStream):
+    return parser.parse(tokens)

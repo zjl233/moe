@@ -1,17 +1,5 @@
-import tokenize
-
 from rply import LexerGenerator
-
-#
-import re
-# re.compile(r'\([^()]*\)')
-# re.compile(
-# r"'(''|[^'])*'")
-# INTNUM = r'\d+'
-# FLOATNUM = r'\d+\.\d+'
-# re.compile(r'\d+(\.\d+)?')
-#
-from utils import log
+from rply.lexer import LexerStream
 
 lg = LexerGenerator()
 
@@ -25,11 +13,12 @@ lg.add('FN', r'fn')
 lg.add('RETURN', r'return')
 lg.add('PRINT', r'print')
 
+# Literals
 lg.add('STRING', r"'(''|[^'])*'")
 lg.add('NUMBER', r'\d+(\.\d+)?')
 lg.add('ID', r'[a-zA-Z][a-zA-Z0-9]*')
 
-# operators
+# Operators
 lg.add('PLUS', r'\+')
 lg.add('MINUS', r'-')
 lg.add('MUL', r'\*')
@@ -43,6 +32,8 @@ lg.add('NE', r'!=')
 lg.add('AND', r'&&')
 lg.add('OR', r'\|\|')
 lg.add('ASSIGN', r'=')
+
+# Separators
 lg.add('COMMA', r'\,')
 lg.add('DOT', r'\.')
 lg.add('SEMI', r';')
@@ -53,13 +44,14 @@ lg.add('RBRACK', r'\]')
 lg.add('LBRACE', r'\{')
 lg.add('RBRACE', r'\}')
 
-lg.ignore('\s+')
+# whitespace and comment
+lg.ignore(r'\s+')
 lg.ignore(r"^#.*?")
 
 lexer = lg.build()
 
-if __name__ == '__main__':
-    prog = 'var x = 1 + 1'
-    for token in lexer.lex('var x = 1.1 + 1;'):
-        log('prog: ', prog)
-        log('token: ', token)
+token_names = [rule.name for rule in lg.rules]
+
+
+def lex(prog: str) -> LexerStream:
+    return lexer.lex(prog)
