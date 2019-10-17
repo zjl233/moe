@@ -26,7 +26,7 @@ def test_print():
 
 
 def test_prog():
-    prog = '1 + 1 * 3'
+    prog = '1 + 2'
     tokens = lex(prog)
     # print(list(tokens))
     tree = parse(tokens)

@@ -1,45 +1,36 @@
 import operator as op
 
-from rply.token import BaseBox
+from rply.token import BaseBox, Token
 
 
 class Number(BaseBox):
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, value: Token):
+        self.value = int(value.getstr())
 
     def eval(self):
         return self.value
 
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__.lower()}<{self.value}>'
+
 
 class BinaryOp(BaseBox):
     op_map = {
-        '+', op.add
-
+        '+': op.add,
+        '-': op.sub,
+        '*': op.mul,
+        '/': op.truediv,
     }
 
-    def __init__(self, left, right):
+    def __init__(self, left, opt: Token, right):
         self.left = left
+        self.opt = opt.getstr()
         self.right = right
 
-
-class Add(BinaryOp):
     def eval(self):
-        return op.add(self.left.eval(), self.right.eval())
-
-
-class Sub(BinaryOp):
-    def eval(self):
-        return self.left.eval() - self.right.eval()
-
-
-class Mul(BinaryOp):
-    def eval(self):
-        return self.left.eval() * self.right.eval()
-
-
-class Div(BinaryOp):
-    def eval(self):
-        return self.left.eval() / self.right.eval()
+        if self.opt not in self.op_map:
+            raise NotImplementedError(self.opt, 'not supported')
+        return self.op_map[self.opt](self.left.eval(), self.right.eval())
 
 
 class Print(BaseBox):

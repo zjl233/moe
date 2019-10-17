@@ -1,6 +1,6 @@
 from typing import List
 
-from rply import ParserGenerator, Token
+from rply import ParserGenerator
 from rply.lexer import LexerStream
 
 from src.ast import *
@@ -25,7 +25,7 @@ memory = {}
 
 
 # all lower case(expr...) is ast
-# all upper case(NUMBER...) is token, and must be cast to ast before return
+# all upper case(NUMBER...) is token, and must be convert to ast before return
 
 
 @pg.production("main : expr")
@@ -38,7 +38,7 @@ def main(p) -> BaseBox:
 def expr_number(p: List[Token]) -> Number:
     # p is a list of the pieces matched by the right hand side of the
     # rule
-    return Number(int(p[0].getstr()))
+    return Number(p[0])
 
 
 @pg.production('expr : LPAREN expr RPAREN')
@@ -50,19 +50,9 @@ def expr_parens(p):
 @pg.production('expr : expr MINUS expr')
 @pg.production('expr : expr MUL expr')
 @pg.production('expr : expr DIV expr')
+@dump_args
 def expr_binop(p) -> BinaryOp:
-    left = p[0]
-    right = p[2]
-    if p[1].gettokentype() == 'PLUS':
-        return Add(left, right)
-    elif p[1].gettokentype() == 'MINUS':
-        return Sub(left, right)
-    elif p[1].gettokentype() == 'MUL':
-        return Mul(left, right)
-    elif p[1].gettokentype() == 'DIV':
-        return Div(left, right)
-    else:
-        raise AssertionError('Oops, this should not be possible!')
+    return BinaryOp(p[0], p[1], p[2])
 
 
 @pg.production('expr : VAR ID ASSIGN expr')
