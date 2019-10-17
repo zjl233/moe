@@ -1,7 +1,10 @@
-from rply import ParserGenerator
+from typing import List
+
+from rply import ParserGenerator, Token
 from rply.lexer import LexerStream
 
 from src.ast import *
+from src.utils import dump_args
 
 pg = ParserGenerator(
     # A list of all token names, accepted by the parser.
@@ -31,7 +34,8 @@ def main(p) -> BaseBox:
 
 
 @pg.production('expr : NUMBER')
-def expr_number(p) -> Number:
+@dump_args
+def expr_number(p: List[Token]) -> Number:
     # p is a list of the pieces matched by the right hand side of the
     # rule
     return Number(int(p[0].getstr()))

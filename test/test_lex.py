@@ -11,13 +11,13 @@ class TestLex(TestCase):
         self.test_lex_number()
         self.test_lex_string()
 
-    def test_lex_number(self):
+    def test_lex_number(self) -> None:
         numbers = '0 -1 1 1234567890 -1234567890'
         numbers_types = [('NUMBER', '0'), ('NUMBER', '-1'), ('NUMBER', '1'),
                          ('NUMBER', '1234567890'), ('NUMBER', '-1234567890')]
         self.assertEqual(numbers, numbers_types)
 
-    def test_lex_string(self):
+    def test_lex_string(self) -> None:
         strings = '"fuck" "shit" "f" "s" "1" "123" "_+" "-+123" "123lou" "lou_+"'
         strings_types = [('STRING', '"fuck"'), ('STRING', '"shit"'), ('STRING', '"f"'), ('STRING', '"s"'),
                          ('STRING', '"1"'), ('STRING', '"123"'), ('STRING', '"_+"'), ('STRING', '"-+123"'),
