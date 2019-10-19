@@ -1,5 +1,3 @@
-
-from src import lexer, parser
 from src.lexer import lex
 from src.parser import parse
 
@@ -14,7 +12,7 @@ def repl():
         if user_input:
             tokens = lex(user_input)
             tree = parse(tokens)
-            print(tree.eval())
+            print(tree.eval({}))
 
 
 def test_print():
@@ -22,15 +20,20 @@ def test_print():
     tokens = lex(prog)
     print(list(tokens))
     tree = parse(tokens)
-    print(tree.eval())
+    print(tree.eval({}))
 
 
 def test_prog():
-    prog = '1 + 2'
+    prog = '''
+    var y = 10;
+    var x = 20;
+    print(x + y);
+    '''
     tokens = lex(prog)
     # print(list(tokens))
     tree = parse(tokens)
-    print(tree.eval())
+    print(type(tree))
+    tree.eval({})
 
 
 def main(prog: str) -> None:
